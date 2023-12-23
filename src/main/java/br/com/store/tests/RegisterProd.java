@@ -22,16 +22,20 @@ public class RegisterProd {
         CategoryDAO categoryDAO = new CategoryDAO(em);
 
         em.getTransaction().begin();
-        em.persist(categoria);
+        em.persist(categoria); //a entidade será persistida no banco de dados quando a transação for confirmada
         categoria.setName("Mudei");
-        em.flush();
-        em.clear();
-        categoria = em.merge(categoria);
+        em.flush(); //sincroniza o contexto do EntityManager com o banco de dados. Isso força a execução das instruções SQL pendentes.
+        em.clear(); //Limpa o contexo do EntittyManager
+        categoria = em.merge(categoria); //usado para reassociar uma entidade que pode ter se tornado desassociad após o clear
         categoria.setName("Troquei");
         categoryDAO.register(categoria);
         //Produtodao.register(smartphone);
-        em.getTransaction().commit();
         em.close();
+        em.remove(categoria);
+        em.getTransaction().commit(); //confirma a transação
+
+
+        em.flush();
 
     }
 }
