@@ -20,7 +20,7 @@ public class CategoryDAO {
         this.em.merge(category);
     }
     public void remove(Category category) {
-        category = em.merge(category);
+        category = em.merge(category); //transformation 
         this.em.remove(category);
     }
 
